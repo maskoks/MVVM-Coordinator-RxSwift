@@ -23,10 +23,10 @@ class LoginViewControllerViewModel: ViewModelType {
         let buttonEnabled: Driver<Bool>
     }
     
-    public let reloadPublish = PublishSubject<Void>()
-    public let loginTextFieldTextPublish = ReplaySubject<String>.create(bufferSize: 1)
-    public let passwordTextFieldTextPublish = ReplaySubject<String>.create(bufferSize: 1)
-    public let buttonPressedPublish = PublishSubject<Void>()
+    private let reloadPublish = PublishSubject<Void>()
+    private let loginTextFieldTextPublish = ReplaySubject<String>.create(bufferSize: 1)
+    private let passwordTextFieldTextPublish = ReplaySubject<String>.create(bufferSize: 1)
+    private let buttonPressedPublish = PublishSubject<Void>()
     
     internal var input: Input!
     internal var output: Output!
