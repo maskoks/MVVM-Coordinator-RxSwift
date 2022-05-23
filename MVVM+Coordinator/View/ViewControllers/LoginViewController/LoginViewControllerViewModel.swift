@@ -8,8 +8,11 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RxFlow
 
-class LoginViewControllerViewModel: ViewModelType {
+
+class LoginViewControllerViewModel: ViewModelType, Stepper {
+    internal var steps = PublishRelay<Step>()
 
     struct Input {
         let reload: AnyObserver<Void>

@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct User {
+    let loggin: String = "admin"
+    let password: String = "1234"
+}
+

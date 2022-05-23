@@ -6,20 +6,40 @@
 //
 
 import UIKit
+import RxFlow
+import RxSwift
+import RxCocoa
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
-    var window: UIWindow?
-
-
+    
+    let disposeBag = DisposeBag()
+    var window: UIWindow!
+    var coordinator = FlowCoordinator()
+    let preferencesService = PreferencesService()
+    lazy var appServices = {
+        return AppServices(preferencesService: self.preferencesService)
+    }()
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            let viewModel = LoginViewControllerViewModel()
-            let loginViewController = LoginViewController(viewModel: viewModel)
-            window.rootViewController = loginViewController
-            self.window = window
-            window.makeKeyAndVisible()
+            self.appServices.preferencesService.setNotLogedIn()
+            self.window = UIWindow(windowScene: windowScene)
+            self.coordinator.rx.willNavigate.subscribe(onNext: { (flow, step) in
+                print("will navigate to flow=\(flow) and step=\(step)")
+            }).disposed(by: self.disposeBag)
+
+            self.coordinator.rx.didNavigate.subscribe(onNext: { (flow, step) in
+                print("did navigate to flow=\(flow) and step=\(step)")
+            }).disposed(by: self.disposeBag)
+            
+            let appFlow = AppFlow(services: self.appServices)
+
+            self.coordinator.coordinate(flow: appFlow, with: AppStepper(withServices: self.appServices))
+
+            Flows.use(appFlow, when: .created) { [weak self] root in
+                self?.window.rootViewController = root
+                self?.window.makeKeyAndVisible()
+            }
         }
     }
 
@@ -53,7 +73,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
 }
 

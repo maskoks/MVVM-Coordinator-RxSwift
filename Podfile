@@ -4,8 +4,11 @@
 target 'MVVM+Coordinator' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-    pod 'RxSwift'
-    pod 'RxCocoa'
+    	pod 'RxSwift'
+    	pod 'RxCocoa'
+	pod 'RxDataSources'
+	pod 'RxFlow'
+
 
   # Pods for MVVM+Coordinator
 

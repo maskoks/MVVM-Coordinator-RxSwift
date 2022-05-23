@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct MainScreenDataSourceModel {
+    let name: String
+    let description: String
+}

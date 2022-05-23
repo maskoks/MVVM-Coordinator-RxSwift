@@ -8,8 +8,9 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxFlow
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, Stepper {
 
     // MARK: - IBOutlets
     @IBOutlet weak var loginTextField: UITextField!
@@ -17,10 +18,11 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
     
+    let viewModel: LoginViewControllerViewModel
     
     // MARK: - Private Properties
-    private let viewModel: LoginViewControllerViewModel
     private let disposeBag = DisposeBag()
+    internal var steps = PublishRelay<Step>()
     
     // MARK: - Life cycle
     init(viewModel: LoginViewControllerViewModel) {
